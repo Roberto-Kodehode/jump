@@ -16,6 +16,11 @@
     background-color: red;
     position: relative;
     top: 150px;
+
+}
+
+.animate {
+    animation: jump 500ms;
 }
 
 #block {
