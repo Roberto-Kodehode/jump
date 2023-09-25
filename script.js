@@ -9,8 +9,10 @@ const spriteImages = [
 ];
 
 let currentImageIndex = 0;
-
 let isJumping = false;
+let playTime = 0; // Initialize play time in seconds
+
+let timerInterval; // Store the timer interval
 
 function animateSprite() {
     if (!isJumping) {
@@ -39,6 +41,25 @@ function jump() {
     }, 500);
 }
 
+function startTimer() {
+    timerInterval = setInterval(function () {
+        playTime++;
+        updateTimer();
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+}
+
+function updateTimer() {
+    const timerElement = document.getElementById("timer");
+    timerElement.textContent = `Time Played: ${playTime} seconds`;
+}
+
+// Start the timer when the game begins
+startTimer();
+
 const checkDead = setInterval(function () {
     const characterTop = parseInt(
         window.getComputedStyle(character).getPropertyValue("top")
@@ -47,8 +68,9 @@ const checkDead = setInterval(function () {
         window.getComputedStyle(block).getPropertyValue("left")
     );
     if (blockLeft < 20 && blockLeft > 0 && characterTop >= 130) {
+        stopTimer(); // Stop the timer when the user loses
         block.style.animation = "none";
         block.style.display = "none";
-        alert("you lose");
+        alert(`Game Over! You played for ${playTime} seconds.`);
     }
 }, 10);
